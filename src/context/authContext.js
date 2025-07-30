@@ -7,13 +7,26 @@ export const AuthContextProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("user")) || false
   );
 
-  const login = () => {
-    setcurrentUser({
-      id: 1,
-      name: "Ayush Sharma",
-      profilePic:
-        "https://images.pexels.com/photos/3228727/pexels-photo-3228727.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    });
+  const login = (email, password) => {
+    // Check credentials
+    if (email === "Admin@example" && password === "admin@12") {
+      const user = {
+        id: 1,
+        name: "Admin User",
+        email: email,
+        profilePic:
+          "https://images.pexels.com/photos/3228727/pexels-photo-3228727.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      };
+      setcurrentUser(user);
+      return { success: true, message: "Login successful" };
+    } else {
+      return { success: false, message: "Invalid credentials" };
+    }
+  };
+
+  const logout = () => {
+    setcurrentUser(false);
+    localStorage.removeItem("user");
   };
 
   useEffect(() => {
@@ -21,7 +34,7 @@ export const AuthContextProvider = ({ children }) => {
   }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login }}>
+    <AuthContext.Provider value={{ currentUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

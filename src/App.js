@@ -44,6 +44,14 @@ function App() {
     return children;
   };
 
+  const PublicRoute = ({ children }) => {
+    if (currentUser) {
+      return <Navigate to="/" />;
+    }
+
+    return children;
+  };
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -65,11 +73,19 @@ function App() {
     },
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <PublicRoute>
+          <Login />
+        </PublicRoute>
+      ),
     },
     {
       path: "/register",
-      element: <Register />,
+      element: (
+        <PublicRoute>
+          <Register />
+        </PublicRoute>
+      ),
     },
   ]);
 

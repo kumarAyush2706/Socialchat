@@ -11,10 +11,16 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
-
+  const navigate = useNavigate();
   const {toggle,darkMode} = useContext(DarkModeContext);
-  const {currentUser} = useContext(AuthContext);
+  const {currentUser, logout} = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <div className="navbar">
@@ -40,6 +46,9 @@ const Navbar = () => {
             <img src={currentUser.profilePic}alt="" />
             <span>{currentUser.name}</span>
         </div>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </div>
   )

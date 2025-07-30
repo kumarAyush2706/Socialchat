@@ -1,15 +1,30 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./login.scss";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const {login} = useContext(AuthContext);
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
-  const handleLogin =()=>{
-    login();
-  }
+    const result = login(email, password);
+    
+    if (result.success) {
+      navigate("/");
+    } else {
+      setError(result.message);
+    }
+    setIsLoading(false);
+  };
 
   return (
     <div className="login">
@@ -28,11 +43,31 @@ const Login = () => {
         </div>
         <div className="right">
           <h1>Login</h1>
-          <form>
-            <input type="text" placeholder="Username" />
-            <input type="password" placeholder="Password" />
-            <button onClick={handleLogin}>Login</button>
+          <form onSubmit={handleLogin}>
+            <input 
+              type="text" 
+              placeholder="Email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input 
+              type="password" 
+              placeholder="Password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {error && <div className="error-message">{error}</div>}
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? "Logging in..." : "Login"}
+            </button>
           </form>
+          <div className="credentials-hint">
+            <p><strong>Demo Credentials:</strong></p>
+            <p>Email: Admin@example</p>
+            <p>Password: admin@12</p>
+          </div>
         </div>
       </div>
     </div>

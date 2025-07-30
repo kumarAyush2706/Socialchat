@@ -75,6 +75,21 @@
         // span{
         // }
       }
+      
+      .logout-btn {
+        padding: 8px 16px;
+        background-color: #ff4444;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 14px;
+        
+        &:hover {
+          background-color: #cc3333;
+        }
+      }
     }
   }
 }
